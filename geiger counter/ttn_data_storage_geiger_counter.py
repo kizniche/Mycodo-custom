@@ -61,9 +61,7 @@ INPUT_INFORMATION = {
     'measurements_dict': measurements_dict,
     'measurements_use_same_timestamp': False,
 
-    'message': """This Input was designed for use with the Moteino Mega with a LoRaWAN transceiver connected to a MightyOwn Geiger Counter (v1.0). Radiation measurements (CPM and μSv/hr) are transmitted to The Things Network (TTN). Mycodo uses this Input to download the measurements from TTN and transmit them to Safecast and GMC Map.
-
-Upload the arduino sketch to the Moteino Mega and set up the credentials based on the applications and device created on TTN. Connect the TX of the Geiger counter to the RX of the Moteino Mega, connect pin 0 of the Moteino Mega to the positive terminal of the Geiger counter battery case (do not put batteries in the Geiger counter's battery case), and put the Geiger counter power switch into the ON position. I use 3x AAA batteries to power the Moteino Mega via VIN (which has its own voltage regulator). The enables the Moteino Mega to power the Geiger counter for 1 minute prior to acquiring measurements and allows receiving the measurement data over the Geiger Counter's serial connection. On TTN, enable the Data Storage Integration and copy the Payload Decoder code. Data can be sent to Safecase (api.safecast.org) and GCM Map (gmcmap.com). For each service, set up an account, add a device, enter credentials, and check the checkbox to enable each.""",
+    'message': """This Input was designed for use with the Moteino Mega with a LoRaWAN transceiver connected to a MightyOwn Geiger Counter (v1.0). Radiation measurements (CPM and μSv/hr) are transmitted to The Things Network (TTN). Mycodo uses this Input to download the measurements from TTN and transmit them to Safecast and GMC Map. More info at https://github.com/kizniche/Mycodo-custom-inputs/tree/master/geiger%20counter""",
 
     'options_enabled': [
         'custom_options',
