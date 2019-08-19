@@ -36,3 +36,23 @@ Every hour, the Moteino Mega powers the Geiger counter for 1 minute to acquire r
 #### Notes
 
 I use 3x AAA batteries to power the Moteino Mega via VIN (which has its own voltage regulator).
+
+#### Images
+
+![GC System 01](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/images/GC_System_01.jpg)
+
+![GC System 02](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/images/GC_System_02.jpg)
+
+![GC System 03](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/images/GC_System_03.jpg)
+
+---
+
+![Screenshot_Safecast_map](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/images/Screenshot_Safecast_map.png)
+
+![Screenshot_Safecast_data](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/images/Screenshot_Safecast_data.png)
+
+---
+
+![Screenshot_GMC_Map](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/images/Screenshot_GMC_Map.png)
+
+![Screenshot_GMC_Map_data](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/images/Screenshot_GMC_Map_data.png)
