@@ -2,8 +2,6 @@
 
 By [Kyle Gabriel](https://kylegabriel.com/)
 
-Code: [Mycodo-custom-inputs/geiger_counter/](https://github.com/kizniche/Mycodo-custom-inputs/tree/master/geiger%20counter)
-
 #### About
 
 This Input was designed for use with the Moteino Mega with a LoRaWAN transceiver, connected to a MightyOhm Geiger Counter (v1.0), powered by three AAA batteries, for long-term remote radiation monitoring.
