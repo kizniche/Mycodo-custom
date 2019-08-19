@@ -35,7 +35,7 @@ Every hour, the Moteino Mega powers the Geiger counter for 1 minute to acquire r
 
 #### Notes
 
-I use 3x AAA batteries to power the Moteino Mega via VIN (which has its own voltage regulator).
+I use 3x AAA batteries to power the Moteino Mega via VIN (which has its own voltage regulator). The battery pack is housed underneath the Geiger counter.
 
 #### Images
 
