@@ -39,20 +39,20 @@ I use 3x AAA batteries to power the Moteino Mega via VIN (which has its own volt
 
 #### Images
 
-![GC System 01](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger_counter/images/GC_System_01.jpg)
+![GC System 01](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger%20counter/images/GC_System_01.jpg)
 
-![GC System 02](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger_counter/images/GC_System_02.jpg)
+![GC System 02](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger%20counter/images/GC_System_02.jpg)
 
-![GC System 03](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger_counter/images/GC_System_03.jpg)
-
----
-
-![Screenshot_Safecast_map](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger_counter/images/Screenshot_Safecast_map.png)
-
-![Screenshot_Safecast_data](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger_counter/images/Screenshot_Safecast_data.png)
+![GC System 03](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger%20counter/images/GC_System_03.jpg)
 
 ---
 
-![Screenshot_GMC_Map](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger_counter/images/Screenshot_GMC_Map.png)
+![Screenshot_Safecast_map](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger%20counter/images/Screenshot_Safecast_map.png)
 
-![Screenshot_GMC_Map_data](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger_counter/images/Screenshot_GMC_Map_data.png)
+![Screenshot_Safecast_data](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger%20counter/images/Screenshot_Safecast_data.png)
+
+---
+
+![Screenshot_GMC_Map](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger%20counter/images/Screenshot_GMC_Map.png)
+
+![Screenshot_GMC_Map_data](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger%20counter/images/Screenshot_GMC_Map_data.png)
