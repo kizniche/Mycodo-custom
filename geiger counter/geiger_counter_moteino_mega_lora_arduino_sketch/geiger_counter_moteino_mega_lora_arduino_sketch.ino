@@ -18,10 +18,13 @@ char readBuffer[64];
 String readString;
 int commaLocations[6];
 uint32_t timer_millis;
+
+// Measure radiation for this many seconds before transmitting measurements
+// Higher durations will increase accuracy but diminish battery life
 uint32_t send_time_sec = 60;
 
-// Schedule transmission every this many milliseconds (approximately, since there is no real time clock)
-uint32_t TX_INTERVAL = 3600000; // 1 hour
+// Schedule transmission every this many seconds (approximately, since there is no real time clock)
+uint32_t TX_INTERVAL = 3600; // 1 hour
 
 static const PROGMEM u1_t NWKSKEY[16] = { CHANGE TO YOUR KEY };
 static const u1_t PROGMEM APPSKEY[16] = { CHANGE TO YOUR KEY };
@@ -174,8 +177,7 @@ void loop() {
             TX_COMPLETE = 0;
             TX_TIMEOUT = 0;
 
-            for (int i = 0; i < TX_INTERVAL / 1000; i+=8) {
-                // watchdog can sleep max 8 sec
+            for (int i = 0; i < TX_INTERVAL; i+=8) {  // watchdog can sleep max 8 sec
                 LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
             }
             digitalWrite(POWER_PIN, HIGH);
