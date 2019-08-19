@@ -10,7 +10,7 @@ These are custom Inputs I created for [Mycodo](https://github.com/kizniche/Mycod
 
 By [Kyle Gabriel](https://kylegabriel.com/)
 
-Code: [kizniche/Mycodo-custom-Inputs/geiger_counter](https://github.com/kizniche/Mycodo-custom-Inputs/tree/master/databases)
+Code: [kizniche/Mycodo-custom-inputs/geiger_counter](https://github.com/kizniche/Mycodo-custom-Inputs/tree/master/databases)
 
 #### About
 
