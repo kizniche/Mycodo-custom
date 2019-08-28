@@ -6,7 +6,7 @@ Blog Post: [Remote Radiation Monitoring](https://kylegabriel.com/projects/2019/0
 
 #### About
 
-This Input was designed for use with the Moteino Mega with a LoRaWAN transceiver, connected to a MightyOhm Geiger Counter (v1.0), powered by three AAA batteries, for long-term remote radiation monitoring.
+This Input was designed for use with the Moteino Mega with a LoRaWAN transceiver, connected to a MightyOhm Geiger Counter (v1.0), powered by three AA batteries, for long-term remote radiation monitoring.
 
 Every hour, the Moteino Mega powers the Geiger counter for 1 minute to acquire radiation measurements. The Moteino Mega then records the counts per minute (CPM) and μSv/hr measurement data over the Geiger Counter's serial connection. The Geiger counter power is turned off and the data is transmitted via LoRaWAN to The Things Network (TTN). Mycodo uses this custom Input to download the measurements from TTN and transmit them to Safecast and GMC Map.
 
