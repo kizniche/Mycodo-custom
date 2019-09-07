@@ -24,7 +24,7 @@ String readString;
 int commaLocations[6];
 int sense_cpm;
 float sense_usv_h;
-float sense_mode;
+int sense_mode;
 uint32_t timer_millis;
 
 // Measure radiation for this many seconds before transmitting measurements
@@ -102,21 +102,21 @@ void store_data() {
     line += readString.substring(commaLocations[4] + 1, commaLocations[5]);
     line +=  ", Mode: " + readString.substring(commaLocations[5] + 1, commaLocations[5] + 3);
     Serial.println(line);
+
     if (readString.substring(commaLocations[2] + 1, commaLocations[3]).toInt() > 0) {
         sense_cpm = readString.substring(commaLocations[2] + 1, commaLocations[3]).toInt();
     }
+
     if (readString.substring(commaLocations[4] + 1, commaLocations[5]).toFloat() > 0) {
         sense_usv_h = readString.substring(commaLocations[4] + 1, commaLocations[5]).toFloat();
     }
-    if (readString.substring(commaLocations[5] + 1, commaLocations[5] + 3) == 'SLOW') {
-        sense_mode = 1;
-    } else if (readString.substring(commaLocations[5] + 1, commaLocations[5] + 3) == 'FAST') {
-        sense_mode = 2;
-    } else if (readString.substring(commaLocations[5] + 1, commaLocations[5] + 3) == 'INST') {
-        sense_mode = 3;
-    } else {
-        sense_mode = 4;
-    }
+
+    String tmp_sense_mode = readString.substring(commaLocations[5] + 1, commaLocations[5] + 3);
+    tmp_sense_mode.trim();
+    if (tmp_sense_mode == 'S') sense_mode = 1;
+    else if (tmp_sense_mode == 'F') sense_mode = 2;
+    else if (tmp_sense_mode == 'I') sense_mode = 3;
+    else sense_mode = 4;
 }
 
 void get_meas() {
