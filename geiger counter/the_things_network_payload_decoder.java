@@ -14,7 +14,7 @@ function Decoder(bytes, port) {
 
     // Mode
     var mode = (bytes[5] << 8) + bytes[4];
-    if ([1, 2, 3, 4].includes(mode)) decoded.mode = mode;
+    if ([1, 2, 3, 4].indexOf(mode) > -1) decoded.mode = mode;
 
     return decoded;
 }

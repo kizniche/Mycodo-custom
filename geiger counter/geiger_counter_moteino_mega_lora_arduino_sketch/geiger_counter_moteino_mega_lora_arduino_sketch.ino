@@ -31,7 +31,7 @@ uint32_t TX_INTERVAL = 3600; // 1 hour
 
 static const PROGMEM u1_t NWKSKEY[16] = { CHANGE TO YOUR KEY };
 static const u1_t PROGMEM APPSKEY[16] = { CHANGE TO YOUR KEY };
-static const u4_t DEVADDR = 0x00000000;  # CHANGE TO YOUR DEVICE ADDRESS
+static const u4_t DEVADDR = 0x00000000;  // CHANGE TO YOUR DEVICE ADDRESS
 
 void os_getArtEui (u1_t* buf) { }
 void os_getDevEui (u1_t* buf) { }
@@ -123,14 +123,14 @@ void get_meas() {
   Serial.println(sense_mode);
 
   // Max CPM value from Geiger counter is 65535
-  txBuffer[0] = lowByte(sense_cpm);;
-  txBuffer[1] = highByte(sense_cpm);;
+  txBuffer[0] = lowByte(sense_cpm);
+  txBuffer[1] = highByte(sense_cpm);
 
   uint16_t payload_uSv_h = LMIC_f2sflt16(sense_usv_h / 10.0);
   txBuffer[2] = lowByte(payload_uSv_h);
   txBuffer[3] = highByte(payload_uSv_h);
 
-  txBuffer[4] = lowByte(sense_mode)
+  txBuffer[4] = lowByte(sense_mode);
   txBuffer[5] = highByte(sense_mode);
 }
 
