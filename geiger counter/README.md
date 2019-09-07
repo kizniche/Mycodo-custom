@@ -1,5 +1,7 @@
 #### LoRaWAN-enabled Geiger Counter
 
+Version 1.1
+
 By [Kyle Gabriel](https://kylegabriel.com/)
 
 Blog Post: [Remote Radiation Monitoring](https://kylegabriel.com/projects/2019/08/remote-radiation-monitoring.html)

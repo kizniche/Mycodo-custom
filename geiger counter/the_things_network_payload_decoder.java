@@ -1,3 +1,9 @@
+//
+// Mycodo Custom Input: Moteino Mega Geiger Counter v1.1
+//
+// https://github.com/kizniche/Mycodo-custom-inputs/tree/master/geiger%20counter
+//
+
 function Decoder(bytes, port) {
     // Decode an uplink message from a buffer
     // (array) of bytes to an object of fields.

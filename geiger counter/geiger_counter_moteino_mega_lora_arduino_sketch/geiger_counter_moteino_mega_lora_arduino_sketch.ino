@@ -1,4 +1,9 @@
 /*
+* Mycodo Custom Input: Moteino Mega Geiger Counter
+* Version: 1.1
+*
+* https://github.com/kizniche/Mycodo-custom-inputs/tree/master/geiger%20counter
+*
 * Libraries required:
 * https://github.com/mcci-catena/arduino-lmic
 * https://github.com/rocketscream/Low-Power
