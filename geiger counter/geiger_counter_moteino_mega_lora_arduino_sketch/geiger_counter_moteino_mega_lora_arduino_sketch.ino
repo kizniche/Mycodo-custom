@@ -10,18 +10,21 @@
 
 #define POWER_PIN 0
 
-uint8_t txBuffer[4];
+uint8_t txBuffer[6];
 byte TX_COMPLETE = 0;
 byte TX_TIMEOUT = 0;
 
 char readBuffer[64];
 String readString;
 int commaLocations[6];
+int sense_cpm;
+float sense_usv_h;
+float sense_mode;
 uint32_t timer_millis;
 
 // Measure radiation for this many seconds before transmitting measurements
 // Higher durations will increase accuracy but diminish battery life
-uint32_t send_time_sec = 60;
+uint32_t sample_time_sec = 90;
 
 // Schedule transmission every this many seconds (approximately, since there is no real time clock)
 uint32_t TX_INTERVAL = 3600; // 1 hour
@@ -85,7 +88,7 @@ void FindCommaLocations() {
     commaLocations[5] = readString.indexOf(',',commaLocations[4] + 1);
 }
 
-void print_data() {
+void store_data() {
     String line = "CPS: ";
     line += readString.substring(commaLocations[0] + 1, commaLocations[1]);
     line += ", CPM: ";
@@ -94,37 +97,52 @@ void print_data() {
     line += readString.substring(commaLocations[4] + 1, commaLocations[5]);
     line +=  ", Mode: " + readString.substring(commaLocations[5] + 1, commaLocations[5] + 3);
     Serial.println(line);
+    if (readString.substring(commaLocations[2] + 1, commaLocations[3]).toInt() > 0) {
+        sense_cpm = readString.substring(commaLocations[2] + 1, commaLocations[3]).toInt();
+    }
+    if (readString.substring(commaLocations[4] + 1, commaLocations[5]).toFloat() > 0) {
+        sense_usv_h = readString.substring(commaLocations[4] + 1, commaLocations[5]).toFloat();
+    }
+    if (readString.substring(commaLocations[5] + 1, commaLocations[5] + 3) == 'SLOW') {
+        sense_mode = 1;
+    } else if (readString.substring(commaLocations[5] + 1, commaLocations[5] + 3) == 'FAST') {
+        sense_mode = 2;
+    } else if (readString.substring(commaLocations[5] + 1, commaLocations[5] + 3) == 'INST') {
+        sense_mode = 3;
+    } else {
+        sense_mode = 4;
+    }
 }
 
 void get_meas() {
-  float sense_cpm = readString.substring(commaLocations[2] + 1, commaLocations[3]).toFloat();
-  sense_cpm = sense_cpm / 10000.0;
-  float sense_usv_h = readString.substring(commaLocations[4] + 1, commaLocations[5]).toFloat();
-  sense_usv_h = sense_usv_h / 10.0;
-
   Serial.print("Send: CPM: ");
-  Serial.print(sense_cpm * 10000.0);
+  Serial.print(sense_cpm);
   Serial.print(", uSv/hr: ");
-  Serial.println(sense_usv_h * 10.0);
+  Serial.print(sense_usv_h);
+  Serial.print(", Mode: ");
+  Serial.println(sense_mode);
 
-  uint16_t payloadCPM = LMIC_f2sflt16(sense_cpm);
-  byte CPMLow = lowByte(payloadCPM);
-  byte CPMHigh = highByte(payloadCPM);
-  txBuffer[0] = CPMLow;
-  txBuffer[1] = CPMHigh;
+  // Max CPM value from Geiger counter is 65535
+  txBuffer[0] = lowByte(sense_cpm);;
+  txBuffer[1] = highByte(sense_cpm);;
 
-  uint16_t payload_uSv_h = LMIC_f2sflt16(sense_usv_h);
-  byte uSv_h_Low = lowByte(payload_uSv_h);
-  byte uSv_h_High = highByte(payload_uSv_h);
-  txBuffer[2] = uSv_h_Low;
-  txBuffer[3] = uSv_h_High;
+  uint16_t payload_uSv_h = LMIC_f2sflt16(sense_usv_h / 10.0);
+  txBuffer[2] = lowByte(payload_uSv_h);
+  txBuffer[3] = highByte(payload_uSv_h);
+
+  txBuffer[4] = lowByte(sense_mode)
+  txBuffer[5] = highByte(sense_mode);
 }
 
 void setup() {
     Serial.begin(115200);
     while (!Serial);
-    delay(500);
-    Serial1.begin(9600);  //Set up Software Serial Port
+
+    delay(100);
+
+    Serial1.begin(9600);  // Serial for Geiger counter
+
+    delay(100);
 
     pinMode(POWER_PIN, OUTPUT);
     digitalWrite(POWER_PIN, HIGH);
@@ -134,13 +152,13 @@ void setup() {
     os_init();
     LMIC_reset();
     #ifdef PROGMEM
-      uint8_t appskey[sizeof(APPSKEY)];
-      uint8_t nwkskey[sizeof(NWKSKEY)];
-      memcpy_P(appskey, APPSKEY, sizeof(APPSKEY));
-      memcpy_P(nwkskey, NWKSKEY, sizeof(NWKSKEY));
-      LMIC_setSession (0x1, DEVADDR, nwkskey, appskey);
+        uint8_t appskey[sizeof(APPSKEY)];
+        uint8_t nwkskey[sizeof(NWKSKEY)];
+        memcpy_P(appskey, APPSKEY, sizeof(APPSKEY));
+        memcpy_P(nwkskey, NWKSKEY, sizeof(NWKSKEY));
+        LMIC_setSession (0x1, DEVADDR, nwkskey, appskey);
     #else
-      LMIC_setSession (0x1, DEVADDR, NWKSKEY, APPSKEY);
+        LMIC_setSession (0x1, DEVADDR, NWKSKEY, APPSKEY);
     #endif
 
     LMIC_selectSubBand(1);
@@ -156,12 +174,12 @@ void setup() {
 
 void loop() {
     if (Serial1.available()) {
-        Serial1.readBytesUntil('\n',readBuffer,64);
+        Serial1.readBytesUntil('\n', readBuffer, 64);
         readString = readBuffer;
         FindCommaLocations();
-        print_data();
+        store_data();
 
-        if ((millis() - timer_millis) > send_time_sec * 1000) {
+        if ((millis() - timer_millis) > sample_time_sec * 1000) {
             digitalWrite(POWER_PIN, LOW);
             get_meas();
             do_send(&sendjob);

@@ -4,12 +4,17 @@ function Decoder(bytes, port) {
     var decoded = {};
 
     // CPM
-    raw_cpm = bytes[0] + bytes[1] * 256;
-    decoded.cpm = sflt162f(raw_cpm) * 10000.0;
+    var cpm = (bytes[1] << 8) + bytes[0];
+    if (cpm > 0) decoded.cpm = cpm;
 
     // uSv/hr
     raw_usv_h = bytes[2] + bytes[3] * 256;
-    decoded.usv_h = sflt162f(raw_usv_h) * 10.0;
+    var usv_h = sflt162f(raw_usv_h) * 10.0;
+    if (usv_h > 0) decoded.usv_h = usv_h;
+
+    // Mode
+    var mode = (bytes[5] << 8) + bytes[4];
+    if ([1, 2, 3, 4].includes(mode)) decoded.mode = mode;
 
     return decoded;
 }
