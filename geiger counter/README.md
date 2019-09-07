@@ -12,6 +12,7 @@ Every hour, the Moteino Mega powers the Geiger counter for 1 minute to acquire r
 
 #### Requirements
 
+* Mycodo >= 7.7.0
 * [Moteino Mega](https://lowpowerlab.com/shop/product/119) with a LoRaWAN Transceiver (choose the proper frequency for your region)
 * [MightyOhm Geiger Counter 1.0](https://mightyohm.com/blog/products/geiger-counter/)
 * Your own LoRaWAN Gateway or use a public gateway

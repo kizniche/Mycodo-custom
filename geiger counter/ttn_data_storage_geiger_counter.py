@@ -61,7 +61,7 @@ INPUT_INFORMATION = {
     'measurements_dict': measurements_dict,
     'measurements_use_same_timestamp': False,
 
-    'message': """This Input was designed for use with the Moteino Mega with a LoRaWAN transceiver connected to a MightyOwn Geiger Counter (v1.0). Radiation measurements (CPM and μSv/hr) are transmitted to The Things Network (TTN). Mycodo uses this Input to download the measurements from TTN and transmit them to Safecast and GMC Map. More info at https://github.com/kizniche/Mycodo-custom-inputs/tree/master/geiger%20counter""",
+    'message': """Requires: Mycodo >= 7.7.0. This Input was designed for use with the Moteino Mega with a LoRaWAN transceiver connected to a MightyOwn Geiger Counter (v1.0). Radiation measurements (CPM and μSv/hr) are transmitted to The Things Network (TTN). Mycodo uses this Input to download the measurements from TTN and transmit them to Safecast and GMC Map. More info at https://github.com/kizniche/Mycodo-custom-inputs/tree/master/geiger%20counter""",
 
     'options_enabled': [
         'custom_options',
@@ -183,6 +183,25 @@ class InputModule(AbstractInput):
     def __init__(self, input_dev, testing=False):
         super(InputModule, self).__init__(input_dev, testing=testing, name=__name__)
 
+        # Initialize custom options
+        self.send_safecast = None
+        self.send_gmcmap = None
+        self.application_id = None
+        self.app_api_key = None
+        self.device_id = None
+        self.send_safecast = None
+        self.safecast_api_key = None
+        self.safecast_latitude = None
+        self.safecast_longitude = None
+        self.safecast_device_id = None
+        self.safecast_location_name = None
+        self.send_gmcmap = None
+        self.gmcmap_account_id = None
+        self.gmcmap_geiger_counter_id = None
+        # Set custom_options
+        self.setup_custom_options(
+            INPUT_INFORMATION['custom_options'], input_dev)
+
         if not testing:
             import SafecastPy
             self.safecastpy = SafecastPy
@@ -192,41 +211,6 @@ class InputModule(AbstractInput):
             self.period = input_dev.period
             self.first_run = True
             self.latest_datetime = input_dev.datetime
-
-            self.send_safecast = False
-            self.send_gmcmap = False
-
-            if input_dev.custom_options:
-                for each_option in input_dev.custom_options.split(';'):
-                    option = each_option.split(',')[0]
-                    value = each_option.split(',')[1]
-                    if option == 'application_id':
-                        self.application_id = value
-                    elif option == 'app_api_key':
-                        self.app_api_key = value
-                    elif option == 'device_id':
-                        self.device_id = value
-
-                    elif option == 'send_safecast':
-                        self.send_safecast = bool(value)
-                    elif option == 'safecast_api_key':
-                        self.safecast_api_key = value
-                    elif option == 'safecast_latitude':
-                        self.safecast_latitude = float(value)
-                    elif option == 'safecast_longitude':
-                        self.safecast_longitude = float(value)
-                    elif option == 'safecast_device_id':
-                        self.safecast_device_id = int(value)
-                    elif option == 'safecast_location_name':
-                        self.safecast_location_name = value
-
-                    elif option == 'send_gmcmap':
-                        self.send_gmcmap = bool(value)
-                    elif option == 'gmcmap_account_id':
-                        self.gmcmap_account_id = int(value)
-                    elif option == 'gmcmap_geiger_counter_id':
-                        self.gmcmap_geiger_counter_id = int(value)
-
 
     def get_new_data(self, past_seconds):
         self.return_dict = measurements_dict.copy()
@@ -249,11 +233,9 @@ class InputModule(AbstractInput):
             if not self.running:
                 break
 
-            ts_formatted_correctly = False
             try:
                 datetime_utc = datetime.datetime.strptime(
                     each_resp['time'][:-7], timestamp_format)
-                ts_formatted_correctly = True
             except:
                 # Sometimes the original timestamp is in milliseconds
                 # instead of nanoseconds. Therefore, remove 3 less digits
@@ -261,14 +243,10 @@ class InputModule(AbstractInput):
                 try:
                     datetime_utc = datetime.datetime.strptime(
                         each_resp['time'][:-4], timestamp_format)
-                    ts_formatted_correctly = True
                 except:
                     self.logger.error("Could not parse timestamp: {}".format(
                         each_resp['time']))
-
-            if not ts_formatted_correctly:
-                # Malformed timestamp encountered. Discard measurement.
-                continue
+                    continue
 
             if (not self.latest_datetime or
                     self.latest_datetime < datetime_utc):
