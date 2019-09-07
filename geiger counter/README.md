@@ -24,15 +24,15 @@ Every hour, the Moteino Mega powers the Geiger counter for 1 minute to acquire r
 
  #### Setup
 
-1. Add the required libraries listed at the top of the arduino sketch to the Arduino IDE, fill in the credentials (at the top of the ino file) created on TTN (below), then upload the sketch to the Moteino Mega.
+1. Add the required libraries listed at the top of the [arduino sketch](https://github.com/kizniche/Mycodo-custom-inputs/blob/master/geiger%20counter/arduino_sketch_geiger_counter_moteino_mega_lora/arduino_sketch_geiger_counter_moteino_mega_lora.ino) to the Arduino IDE, fill in the credentials (at the top of the ino file) created on TTN (below), then upload the sketch to the Moteino Mega.
 2. Connect the TX pin of the Geiger counter to the RX pin of the Moteino Mega.
 3. Connect pin 0 of the Moteino Mega to the positive terminal of the Geiger counter battery case (do not put batteries in the Geiger counter's battery case).
 4. Connect the ground pin of the Moteino Mega to the ground pin of the Geiger counter.
 5. Put the Geiger counter power switch into the ON position.
 6. On TTN, create a new application and add a device.
-7. On TTN, enable the Data Storage Integration in the application and copy the Payload Decoder code.
+7. On TTN, enable the Data Storage Integration in the application and copy the [Payload Decoder code](https://github.com/kizniche/Mycodo-custom-inputs/blob/master/geiger%20counter/payload_decoder_the_things_network_app.java).
 8. Power the Moteino Mega and verify data is being transmitted to TTN.
-9. In Mycodo, upload the custom Input file under Config -> Inputs.
+9. In Mycodo, upload the [custom Input](https://github.com/kizniche/Mycodo-custom-inputs/blob/master/geiger%20counter/mycodo_custom_input_ttn_data_storage_geiger_counter.py) file under Config -> Inputs.
 10. In Mycodo, on the Data page, use the dropdown to select and add the new Input "Geiger Counter (TTN/Safecast/GMCMap)".
 11. Configure and activate the new Input. Data can be sent to Safecast (api.safecast.org) and GMC Map (gmcmap.com). For each service, set up an account, add a device, enter credentials, and check the checkbox to enable each.
 
