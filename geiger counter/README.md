@@ -1,6 +1,6 @@
 #### LoRaWAN-enabled Geiger Counter
 
-Version 1.1
+[Version 1.1](https://github.com/kizniche/Mycodo-custom-inputs/blob/master/geiger%20counter/CHANGELOG.md)
 
 By [Kyle Gabriel](https://kylegabriel.com/)
 
