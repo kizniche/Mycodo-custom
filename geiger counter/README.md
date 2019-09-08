@@ -22,7 +22,12 @@ Every hour, the Moteino Mega powers the Geiger counter for 1 minute to acquire r
 * An account with [Safecast](https://api.safecast.org)
 * An account with [GMC Map](https://www.gmcmap.com/)
 
- #### Setup
+### Required Arduino Libraries
+
+* [mcci-catena/arduino-lmic](https://github.com/mcci-catena/arduino-lmic)
+* [rocketscream/Low-Power](https://github.com/rocketscream/Low-Power)
+
+#### Setup
 
 1. Add the required libraries listed at the top of the [arduino sketch](https://github.com/kizniche/Mycodo-custom-inputs/blob/master/geiger%20counter/arduino_sketch_geiger_counter_moteino_mega_lora/arduino_sketch_geiger_counter_moteino_mega_lora.ino) to the Arduino IDE, fill in the credentials (at the top of the ino file) created on TTN (below), then upload the sketch to the Moteino Mega.
 2. Connect the TX pin of the Geiger counter to the RX pin of the Moteino Mega.
