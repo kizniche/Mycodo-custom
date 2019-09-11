@@ -1,5 +1,12 @@
 ## 1.1 (2019-09-07)
 
+### Features
+
+ - Add support for 128x64 SD1306 OLED Display
+
+
+## 1.1 (2019-09-07)
+
 ### Bugfixes
 
  - Improve measurement storage reliability

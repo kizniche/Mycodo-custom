@@ -1,6 +1,6 @@
 /*
 * Mycodo Custom Input: Moteino Mega Geiger Counter
-* Version: 1.1
+* Version: 1.2
 *
 * https://github.com/kizniche/Mycodo-custom-inputs/tree/master/geiger%20counter
 *
@@ -12,6 +12,25 @@
 #include <lmic.h>
 #include <hal/hal.h>
 #include "LowPower.h"
+
+#define VERSION "1.2"
+
+// Uncomment the next line to enable the SD1306 OLED Display
+//#define USE_SSD1306_OLED 1
+
+/* Note that this display draws between 5 and 10 mA and will deplete your batteries
+*  quicker if it's on than if it is not. Therefore, it is recommended to add a
+*  switch to turn it on or off or modify the code to do something similar.
+*/
+
+#ifdef USE_SSD1306_OLED
+#define OLED_I2C_ADDRESS 0x3c
+#include <Adafruit_GFX.h>  // Include core graphics library for the display
+#include <Adafruit_SSD1306.h>  // Include Adafruit_SSD1306 library to drive the display
+Adafruit_SSD1306 display(128, 64);  // Create display
+#include <Fonts/FreeMono9pt7b.h>  // Add a custom font
+bool i2c_error;
+#endif
 
 #define POWER_PIN 0
 
@@ -33,8 +52,9 @@ bool first_run = true;
 uint32_t sample_time_sec = 90;
 
 // Schedule transmission every this many seconds (approximately, since there is no real time clock)
-uint32_t TX_INTERVAL = 3600; // 1 hour
+uint32_t TX_INTERVAL = 3600;  // 1 hour
 
+// TTN Credentials
 static const PROGMEM u1_t NWKSKEY[16] = { CHANGE TO YOUR KEY };
 static const u1_t PROGMEM APPSKEY[16] = { CHANGE TO YOUR KEY };
 static const u4_t DEVADDR = 0x00000000;  // CHANGE TO YOUR DEVICE ADDRESS
@@ -45,6 +65,7 @@ void os_getDevKey (u1_t* buf) { }
 
 static osjob_t sendjob;
 
+// Pin map for Moteino Mega
 const lmic_pinmap lmic_pins = {
   .nss = 4,
   .rxtx = LMIC_UNUSED_PIN,
@@ -143,6 +164,24 @@ void store_data() {
     else if (tmp_sense_mode == "F") sense_mode = 2;
     else if (tmp_sense_mode == "I") sense_mode = 3;
     else sense_mode = 4;
+
+    #ifdef USE_SSD1306_OLED
+    if (!i2c_error) {
+        display.clearDisplay();
+        display_header();
+
+        display_text(28, 27, String("CPM: ") + String(sense_cpm));
+        display_text(28, 40, String("uSv/hr: ") + String(sense_usv_h));
+        String mode;
+        if (sense_mode == 1) mode = "Slow";
+        else if (sense_mode == 2) mode = "Fast";
+        else if (sense_mode == 3) mode = "Instant";
+        else mode = "ERR";
+        display_text(28, 53, String("Mode: ") + mode);
+
+        display.display();
+    }
+    #endif
 }
 
 void build_payload() {
@@ -167,14 +206,45 @@ void print_measurements() {
     Serial.println(sense_mode);
 }
 
+void display_header() {
+    display_text(12, 0, String("Geiger Counter ") + VERSION);
+    display_text(23, 9, F("Radiation Level"));
+}
+
+void display_text(int x, int y, String text) {
+    display.setCursor(x, y);
+    display.print(text);
+    display.display();
+}
+
 void setup() {
     Serial.begin(115200);
     while (!Serial);
 
     delay(100);
-    Serial.println("Start");
+    Serial.print("Geiger Counter v");
+    Serial.println(VERSION);
 
     Serial1.begin(9600);  // Serial for Geiger counter
+
+    #ifdef USE_SSD1306_OLED
+    Serial.println(F("OLED Enabled"));
+    Wire.begin();
+    Wire.beginTransmission(OLED_I2C_ADDRESS);
+    i2c_error = Wire.endTransmission();
+    if (i2c_error) {
+        Serial.println(F("Cound not find OLED. Not attempting initialization."));
+    } else {
+        Serial.println(F("OLED Found"));
+        display.begin(SSD1306_SWITCHCAPVCC, OLED_I2C_ADDRESS);
+        display.clearDisplay();
+        display.setTextSize(1);
+        display.setTextColor(WHITE);
+        display.setRotation(0);
+        display.setTextWrap(false);
+        display_header();
+    }
+    #endif
 
     delay(100);
 
