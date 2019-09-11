@@ -27,6 +27,11 @@ Every hour, the Moteino Mega powers the Geiger counter for 1 minute to acquire r
 * [mcci-catena/arduino-lmic](https://github.com/mcci-catena/arduino-lmic)
 * [rocketscream/Low-Power](https://github.com/rocketscream/Low-Power)
 
+### Optional libraries (for OLED display)
+
+* [adafruit/Adafruit_SSD1306](https://github.com/adafruit/Adafruit_SSD1306)
+* [adafruit/Adafruit-GFX-Library](https://github.com/adafruit/Adafruit-GFX-Library)
+
 #### Setup
 
 * Add the required libraries listed at the top of the [arduino sketch](https://github.com/kizniche/Mycodo-custom-inputs/blob/master/geiger%20counter/arduino_sketch_geiger_counter_moteino_mega_lora/arduino_sketch_geiger_counter_moteino_mega_lora.ino) to the Arduino IDE.
