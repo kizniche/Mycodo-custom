@@ -1,6 +1,6 @@
 #### LoRaWAN-enabled Geiger Counter
 
-[Version 1.1](https://github.com/kizniche/Mycodo-custom-inputs/blob/master/geiger%20counter/CHANGELOG.md)
+[Version 1.2](https://github.com/kizniche/Mycodo-custom-inputs/blob/master/geiger%20counter/CHANGELOG.md)
 
 By [Kyle Gabriel](https://kylegabriel.com/)
 
@@ -51,7 +51,7 @@ Every hour, the Moteino Mega powers the Geiger counter for 1 minute to acquire r
 
 #### Notes
 
-I use 3x AAA batteries to power the Moteino Mega via the VIN pin (which has its own voltage regulator). In the images, below, the battery pack is housed underneath the Geiger counter.
+I use 3x AA batteries to power the Moteino Mega via the VIN pin (which has its own voltage regulator). In the images, below, the battery pack is housed underneath the Geiger counter.
 
 #### Images
 

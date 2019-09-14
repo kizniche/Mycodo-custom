@@ -1,3 +1,10 @@
+## 1.2 (2019-09-14)
+
+### Features
+
+ - Add modes of use (1. headless with deep sleep, 2. OLED with continual operation)
+
+
 ## 1.1 (2019-09-07)
 
 ### Features

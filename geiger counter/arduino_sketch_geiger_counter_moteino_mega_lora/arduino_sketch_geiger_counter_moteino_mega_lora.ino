@@ -1,27 +1,65 @@
 /*
-* Mycodo Custom Input: Moteino Mega Geiger Counter
-* Version: 1.2
+*  Mycodo Custom Input: Moteino Mega Geiger Counter
+*  Version: 1.2
 *
-* https://github.com/kizniche/Mycodo-custom-inputs/tree/master/geiger%20counter
+*  https://github.com/kizniche/Mycodo-custom-inputs/tree/master/geiger%20counter
 *
-* Libraries required:
-* https://github.com/mcci-catena/arduino-lmic
-* https://github.com/rocketscream/Low-Power
+*  Libraries required:
+*  https://github.com/mcci-catena/arduino-lmic
+*  https://github.com/rocketscream/Low-Power
 */
 
 #include <lmic.h>
 #include <hal/hal.h>
 #include "LowPower.h"
 
-#define VERSION "1.2"
+#define VERSION "1.3"
+
+/*
+ *  There are two modes to be operated in:
+ *
+ *  1. Measure radiation for sample_time_sec seconds and transmit, then
+ *     sleep for tx_interval_sec seconds
+ *
+ *  2. Display radiation measurements on an OLED display and transmit every
+ *     lcd_tx_interval_sec seconds
+ *
+ *  The first mode uses less power due to the lack of an LCD and the use of
+ *  deep sleep.
+ *
+ *  The second mode is useful for viewing the radiation level on an LCD, and
+ *  is intended for a wired power connection.
+ */
 
 // Uncomment the next line to enable the SD1306 OLED Display
-//#define USE_SSD1306_OLED 1
+#define USE_SSD1306_OLED 1
 
 /* Note that this display draws between 5 and 10 mA and will deplete your batteries
 *  quicker if it's on than if it is not. Therefore, it is recommended to add a
 *  switch to turn it on or off or modify the code to do something similar.
 */
+
+//
+// Mode 1 options
+//
+
+// Measure radiation for this many seconds before transmitting measurements
+// Higher durations will increase accuracy but diminish battery life
+uint32_t sample_time_sec = 90;  // 1.5 minutes
+
+// Schedule transmission every this many seconds (approximately, since there is no real time clock)
+uint32_t tx_interval_sec = 3600;  // 1 hour
+
+//
+//  Mode 2 options
+//
+
+bool prevent_sleep_when_lcd_detected = true;  // If LCD enabled, don't sleep and use alternate TX interval
+uint32_t lcd_tx_interval_sec = 600;  // 10 minutes
+
+//
+// End mode options
+//
 
 #ifdef USE_SSD1306_OLED
 #define OLED_I2C_ADDRESS 0x3c
@@ -29,11 +67,11 @@
 #include <Adafruit_SSD1306.h>  // Include Adafruit_SSD1306 library to drive the display
 Adafruit_SSD1306 display(128, 64);  // Create display
 #include <Fonts/FreeMono9pt7b.h>  // Add a custom font
-bool i2c_error;
 #endif
 
 #define POWER_PIN 0
 
+bool i2c_error = true;
 uint8_t txBuffer[6];
 byte TX_COMPLETE = 0;
 byte TX_TIMEOUT = 0;
@@ -46,13 +84,6 @@ float sense_usv_h;
 int sense_mode;
 uint32_t timer_millis;
 bool first_run = true;
-
-// Measure radiation for this many seconds before transmitting measurements
-// Higher durations will increase accuracy but diminish battery life
-uint32_t sample_time_sec = 90;
-
-// Schedule transmission every this many seconds (approximately, since there is no real time clock)
-uint32_t TX_INTERVAL = 3600;  // 1 hour
 
 // TTN Credentials
 static const PROGMEM u1_t NWKSKEY[16] = { CHANGE TO YOUR KEY };
@@ -87,9 +118,11 @@ void onEvent (ev_t ev) {
 //                Serial.write(LMIC.frame+LMIC.dataBeg, LMIC.dataLen);
 //                Serial.println();
             }
-
-            for (int i = 0; i < TX_INTERVAL; i+=8) {  // watchdog can sleep max 8 sec
-                LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
+            if (prevent_sleep_when_lcd_detected and !i2c_error);
+            else {
+                for (int i = 0; i < tx_interval_sec; i+=8) {  // watchdog can sleep max 8 sec
+                    LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
+                }
             }
             loop_measure();
             do_send(&sendjob);
@@ -121,10 +154,19 @@ void loop_measure() {
             readString = readBuffer;
             find_comma_locations();
             store_data();
-            if ((millis() - timer_millis) > sample_time_sec * 1000) {
-                build_payload();
-                print_measurements();
-                break;
+
+            if (prevent_sleep_when_lcd_detected and !i2c_error) {
+                if ((millis() - timer_millis) > lcd_tx_interval_sec * 1000) {
+                    build_payload();
+                    print_measurements();
+                    break;
+                }
+            } else {
+                if ((millis() - timer_millis) > sample_time_sec * 1000) {
+                    build_payload();
+                    print_measurements();
+                    break;
+                }
             }
         }
     }
@@ -206,6 +248,7 @@ void print_measurements() {
     Serial.println(sense_mode);
 }
 
+#ifdef USE_SSD1306_OLED
 void display_header() {
     display_text(12, 0, String("Geiger Counter ") + VERSION);
     display_text(23, 9, F("Radiation Level"));
@@ -216,6 +259,7 @@ void display_text(int x, int y, String text) {
     display.print(text);
     display.display();
 }
+#endif
 
 void setup() {
     Serial.begin(115200);
