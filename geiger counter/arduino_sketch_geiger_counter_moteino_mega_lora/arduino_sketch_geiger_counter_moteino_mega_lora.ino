@@ -1,6 +1,6 @@
 /*
 *  Mycodo Custom Input: Moteino Mega Geiger Counter
-*  Version: 1.2
+*  Version: 1.3
 *
 *  https://github.com/kizniche/Mycodo-custom-inputs/tree/master/geiger%20counter
 *
