@@ -170,7 +170,11 @@ void loop_measure() {
             }
         }
     }
-    digitalWrite(POWER_PIN, LOW);
+
+    // Only turn off Geiger counter if in Mode 1 for deep sleep
+    // If in mode 2, don't turn off because this will reset the speaker state
+    if (prevent_sleep_when_lcd_detected and !i2c_error);
+    else digitalWrite(POWER_PIN, LOW);
 }
 
 void find_comma_locations() {
