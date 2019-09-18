@@ -213,8 +213,6 @@ class InputModule(AbstractInput):
             self.latest_datetime = input_dev.datetime
 
     def get_new_data(self, past_seconds):
-        self.return_dict = measurements_dict.copy()
-
         # Basic implementation. Future development may use more complex library to access API
         endpoint = "https://{app}.data.thethingsnetwork.org/api/v2/query/{dev}?last={time}".format(
             app=self.application_id, dev=self.device_id, time="{}s".format(int(past_seconds)))
@@ -230,6 +228,7 @@ class InputModule(AbstractInput):
             return
 
         for i, each_resp in enumerate(response.json(), 1):
+            self.return_dict = measurements_dict.copy()
             if not self.running:
                 break
 
@@ -297,38 +296,47 @@ class InputModule(AbstractInput):
                 self.logger.debug("No measurements to add to influxdb.")
 
             # Send to GMC Map
-            if self.send_gmcmap and i == len(response.json()) and cpm_value > 0 and usv_h_value > 0:
-                gmcmap = 'http://www.GMCmap.com/log2.asp?AID=02376&GID=22044260632&CPM={cpm:.0f}&uSV={usv:.3f}'.format(
-                    aid=self.gmcmap_account_id,
-                    gcid=self.gmcmap_geiger_counter_id,
-                    cpm=cpm_value,
-                    usv=usv_h_value)
-                contents = urllib.request.urlopen(gmcmap).read()
-                self.logger.debug("GMCMap: {}".format(contents))
+            if (self.send_gmcmap and
+                    i == len(response.json()) and
+                    cpm_value > 0 and
+                    usv_h_value > 0):
+                try:
+                    gmcmap = 'http://www.GMCmap.com/log2.asp?AID=02376&GID=22044260632&CPM={cpm:.0f}&uSV={usv:.3f}'.format(
+                        aid=self.gmcmap_account_id,
+                        gcid=self.gmcmap_geiger_counter_id,
+                        cpm=cpm_value,
+                        usv=usv_h_value)
+                    contents = urllib.request.urlopen(gmcmap).read()
+                    self.logger.debug("GMCMap: {}".format(contents))
+                except Exception as e:
+                    self.logger.error("Error adding data to GMC Map: {}".format(e))
 
             # Send uSv/hr to Safecast
             if self.send_safecast and cpm_value > 0 and usv_h_value > 0:
-                safecast = self.safecastpy.SafecastPy(api_key=self.safecast_api_key)
-                measurement_usv = safecast.add_measurement(json={
-                    'latitude': self.safecast_latitude,
-                    'longitude': self.safecast_longitude,
-                    'value': usv_h_value,
-                    'unit': self.safecastpy.UNIT_USV,
-                    'captured_at': usv_h_ts.isoformat() + '+00:00',
-                    'device_id': self.safecast_device_id,
-                    'location_name': self.safecast_location_name
-                })
-                measurement_cpm = safecast.add_measurement(json={
-                    'latitude': self.safecast_latitude,
-                    'longitude': self.safecast_longitude,
-                    'value': cpm_value,
-                    'unit': self.safecastpy.UNIT_CPM,
-                    'captured_at': cpm_ts.isoformat() + '+00:00',
-                    'device_id': self.safecast_device_id,
-                    'location_name': self.safecast_location_name
-                })
-                self.logger.debug('uSv/hr measurement id: {0}'.format(measurement_usv['id']))
-                self.logger.debug('CPM measurement id: {0}'.format(measurement_cpm['id']))
+                try:
+                    safecast = self.safecastpy.SafecastPy(api_key=self.safecast_api_key)
+                    measurement_usv = safecast.add_measurement(json={
+                        'latitude': self.safecast_latitude,
+                        'longitude': self.safecast_longitude,
+                        'value': usv_h_value,
+                        'unit': self.safecastpy.UNIT_USV,
+                        'captured_at': usv_h_ts.isoformat() + '+00:00',
+                        'device_id': self.safecast_device_id,
+                        'location_name': self.safecast_location_name
+                    })
+                    measurement_cpm = safecast.add_measurement(json={
+                        'latitude': self.safecast_latitude,
+                        'longitude': self.safecast_longitude,
+                        'value': cpm_value,
+                        'unit': self.safecastpy.UNIT_CPM,
+                        'captured_at': cpm_ts.isoformat() + '+00:00',
+                        'device_id': self.safecast_device_id,
+                        'location_name': self.safecast_location_name
+                    })
+                    self.logger.debug('uSv/hr measurement id: {0}'.format(measurement_usv['id']))
+                    self.logger.debug('CPM measurement id: {0}'.format(measurement_cpm['id']))
+                except Exception as e:
+                    self.logger.error("Error adding data to Safecast: {}".format(e))
 
         # set datetime to latest timestamp
         if self.running:
