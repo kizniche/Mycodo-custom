@@ -18,7 +18,7 @@ Custom Inputs
 LoRaWAN-enabled Geiger Counter
 ------------------------------
 
-By [Kyle Gabriel](`https://kylegabriel.com/ <https://kylegabriel.com/>`__)
+By `Kyle Gabriel <https://kylegabriel.com/>`__
 
 Blog Post: `Remote Radiation Monitoring <https://kylegabriel.com/projects/2019/08/remote-radiation-monitoring.html>`__
 
