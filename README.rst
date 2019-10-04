@@ -10,9 +10,7 @@ About
 
 These are custom Inputs and custom Controllers I created for [Mycodo](https://github.com/kizniche/Mycodo) that don't quite fit with the built-in set. This could be for a number of reasons (they're experimental/unreliable, they will be rarely used, they're too complex for the average user, etc). As such, I've created this repository to share them publicly in case anyone wants to use them.
 
-* [LoRaWAN-enabled Geiger Counter](#lorawan-enabled-geiger-counter) - Long-term remote radiation monitoring
-
----
+--------------
 
 Custom Inputs
 =============
