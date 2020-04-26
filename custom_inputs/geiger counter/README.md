@@ -41,7 +41,7 @@ measurements from TTN and transmit them to Safecast and GMC Map.
 
 #### Setup
 
-* Add the required libraries listed at the top of the [arduino sketch](https://github.com/kizniche/Mycodo-custom-inputs/blob/master/geiger%20counter/arduino_sketch_geiger_counter_moteino_mega_lora/arduino_sketch_geiger_counter_moteino_mega_lora.ino) to the Arduino IDE.
+* Add the required libraries listed at the top of the [arduino sketch](https://raw.githubusercontent.com/kizniche/Mycodo-custom/master/custom_inputs/geiger%20counter/arduino_sketch_geiger_counter_moteino_mega_lora/arduino_sketch_geiger_counter_moteino_mega_lora.ino) to the Arduino IDE.
 * Fill in the credentials created on TTN (below) at the top of the Arduino code at the heading "TTN Credentials".
 * If using a 128x64 I2C SD1306 OLED display, connect the display SDA and SCL pins to the SDA/SCL pins of the Moteino Mega and uncomment "#define USE_SSD1306_OLED 1" at the top of the Arduino code.
 * Using the Arduino IDE, upload the code to the Moteino Mega.
@@ -50,9 +50,9 @@ measurements from TTN and transmit them to Safecast and GMC Map.
 * Connect the ground pin of the Moteino Mega to the ground pin of the Geiger counter. 
 * Put the Geiger counter power switch into the ON position.
 * On TTN, create a new application and add a device.
-* On TTN, enable the Data Storage Integration in the application and copy the [Payload Decoder code](https://github.com/kizniche/Mycodo-custom-inputs/blob/master/geiger%20counter/payload_decoder_the_things_network_app.java).
+* On TTN, enable the Data Storage Integration in the application and copy the [Payload Decoder code](https://raw.githubusercontent.com/kizniche/Mycodo-custom/master/custom_inputs/geiger%20counter/payload_decoder_the_things_network_app.java).
 * Power the Moteino Mega and verify data is being transmitted to TTN.
-* In Mycodo, upload the [custom Input](https://github.com/kizniche/Mycodo-custom-inputs/blob/master/geiger%20counter/mycodo_custom_input_ttn_data_storage_geiger_counter.py) file under Config -> Inputs.
+* In Mycodo, upload the [Custom Input](https://raw.githubusercontent.com/kizniche/Mycodo-custom/master/custom_inputs/geiger%20counter/mycodo_custom_input_ttn_data_storage_geiger_counter.py) file under Config -> Inputs.
 * In Mycodo, on the Data page, use the dropdown to select and add the new Input "Geiger Counter (TTN/Safecast/GMCMap)".
 * Configure and activate the new Input. Data can be sent to Safecast (api.safecast.org) and GMC Map (gmcmap.com). For each service, set up an account, add a device, enter credentials, and check the checkbox to enable each.
 
