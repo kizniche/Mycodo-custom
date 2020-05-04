@@ -50,8 +50,8 @@ def constraints_pass_positive_value(mod_controller, value):
 
 
 CONTROLLER_INFORMATION = {
-    'controller_name_unique': 'COOLBOT_CLONE',
-    'controller_name': 'CoolBot Clone',
+    'controller_name_unique': 'COOLBOT_CLONE_1_0',
+    'controller_name': 'CoolBot Clone (v1.0)',
 
     'message': 'This controller is a CoolBot cone, which will provide the functionality of a CoolBot. '
                'Requirements: Output to control the AC unit, output to power the heating unit attached '
