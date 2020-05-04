@@ -160,8 +160,8 @@ CONTROLLER_INFORMATION = {
             'options_select': [
                 'Output'
             ],
-            'name': lazy_gettext('PID 1 Output Up'),
-            'phrase': lazy_gettext('Select the output to raise the condition for PID 1. Make this the same output as PID 2 Lower Output.')
+            'name': lazy_gettext('PID 1 Output Raise'),
+            'phrase': lazy_gettext('Select the output to raise the condition for PID 1. Make this the same output as PID 2 Output Lower.')
         },
         {
             'id': 'pid_1_output_lower',
@@ -170,7 +170,7 @@ CONTROLLER_INFORMATION = {
             'options_select': [
                 'Output'
             ],
-            'name': lazy_gettext('PID 1 Output Down'),
+            'name': lazy_gettext('PID 1 Output Lower'),
             'phrase': lazy_gettext('Select the output to lower the condition for PID 1')
         },
 
@@ -259,7 +259,7 @@ CONTROLLER_INFORMATION = {
             'options_select': [
                 'Output'
             ],
-            'name': lazy_gettext('PID 2 Output Up'),
+            'name': lazy_gettext('PID 2 Output Raise'),
             'phrase': lazy_gettext('Select the output to raise the condition for PID 2')
         },
         {
@@ -269,8 +269,8 @@ CONTROLLER_INFORMATION = {
             'options_select': [
                 'Output'
             ],
-            'name': lazy_gettext('PID 2 Output Down'),
-            'phrase': lazy_gettext('Select the output to lower the condition for PID 2. Make this the same output as PID 1 Raise Output.')
+            'name': lazy_gettext('PID 2 Output Lower'),
+            'phrase': lazy_gettext('Select the output to lower the condition for PID 2. Make this the same output as PID 1 Output Raise.')
         }
     ]
 }
