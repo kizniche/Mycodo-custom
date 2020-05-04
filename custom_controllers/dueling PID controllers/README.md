@@ -16,6 +16,6 @@ This custom Controller will logically handle two dueling PID controllers that ut
 
 #### Setup
 
-* In Mycodo, upload the [Custom Controller](https://raw.githubusercontent.com/kizniche/Mycodo-custom/master/custom_controllers/coolbot%20clone/mycodo_custom_controller_coolbot_clone.py) file under Config -> Controllers.
+* In Mycodo, upload the [Custom Controller](https://raw.githubusercontent.com/kizniche/Mycodo-custom/master/custom_controllers/dueling%20PID%20controllers/mycodo_custom_controller_dueling_pids.py) file under Config -> Controllers.
 * In Mycodo, on the Function page, use the dropdown to select and add the new Controller "Dueling PIDs".
 * Configure the options, then activate the Controller.
