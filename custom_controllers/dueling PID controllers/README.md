@@ -1,4 +1,4 @@
-#### Dueling PIDs
+#### Custom Controller: Dueling PIDs
 
 [Version 1.0](https://github.com/kizniche/Mycodo-custom/blob/master/custom_controllers/dueling%20PID%20controllers/CHANGELOG.md)
 

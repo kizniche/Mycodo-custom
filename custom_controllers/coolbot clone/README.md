@@ -1,4 +1,4 @@
-#### CoolBot Clone
+#### Custom Controller: CoolBot Clone
 
 [Version 1.0](https://github.com/kizniche/Mycodo-custom/blob/master/custom_controllers/coolbot%20clone/CHANGELOG.md)
 

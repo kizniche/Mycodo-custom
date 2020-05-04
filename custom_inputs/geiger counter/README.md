@@ -1,4 +1,4 @@
-#### LoRaWAN-enabled Geiger Counter
+#### Custom Input: LoRaWAN-enabled Geiger Counter
 
 [Version 1.3](https://github.com/kizniche/Mycodo-custom/blob/master/custom_inputs/geiger%20counter/CHANGELOG.md)
 
