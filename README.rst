@@ -39,12 +39,3 @@ By `Kyle Gabriel <https://kylegabriel.com/>`__
 Details and code: `Mycodo-custom/custom_controllers/coolbot clone/ <https://github.com/kizniche/Mycodo-custom/blob/master/custom_controllers/coolbot%20clone>`__
 
 This Controller mimics the functionality of a `CoolBot <https://storeitcold.com>`__, allowing a walking cool room or freezer to be created using an inexpensive air conditioner unit.
-
-Dueling PIDs
-------------
-
-By `Kyle Gabriel <https://kylegabriel.com/>`__
-
-Details and code: `Mycodo-custom/custom_controllers/dueling PID controllers/ <https://github.com/kizniche/Mycodo-custom/blob/master/custom_controllers/dueling%20PID%20controllers>`__
-
-This Controller is an example of how to logically handle a scenario where two PIDs utilize the same output so there are no conflicts with how the output is modulated.
