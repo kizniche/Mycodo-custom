@@ -61,7 +61,7 @@ INPUT_INFORMATION = {
     'measurements_dict': measurements_dict,
     'measurements_use_same_timestamp': False,
 
-    'message': """Requires: Mycodo >= 7.7.0. This Input was designed for use with the Moteino Mega with a LoRaWAN transceiver connected to a MightyOwn Geiger Counter (v1.0). Radiation measurements (CPM and μSv/hr) are transmitted to The Things Network (TTN). Mycodo uses this Input to download the measurements from TTN and transmit them to Safecast and GMC Map. More info at https://github.com/kizniche/Mycodo-custom-inputs/tree/master/geiger%20counter""",
+    'message': """Requires: Mycodo >= 7.7.0. This Input was designed for use with the Moteino Mega with a LoRaWAN transceiver connected to a MightyOwn Geiger Counter (v1.0). Radiation measurements (CPM and μSv/hr) are transmitted to The Things Network (TTN). Mycodo uses this Input to download the measurements from TTN and transmit them to Safecast and GMC Map. More info at https://github.com/kizniche/Mycodo-custom/tree/master/custom_inputs/geiger%20counter""",
 
     'options_enabled': [
         'custom_options',
