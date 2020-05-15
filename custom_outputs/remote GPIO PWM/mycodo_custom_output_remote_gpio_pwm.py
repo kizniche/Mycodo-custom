@@ -1,6 +1,6 @@
 # coding=utf-8
 #
-# output_remote_gpio.py - Remote GPIO Output
+# mycodo_custom_output_remote_gpio_pwm.py - PWM Remote GPIO Output
 #
 from flask_babel import lazy_gettext
 from mycodo.outputs.base_output import AbstractOutput
@@ -8,8 +8,8 @@ from mycodo.outputs.base_output import AbstractOutput
 # Measurements
 measurements_dict = {
     0: {
-        'measurement': 'duration_time',
-        'unit': 's'
+        'measurement': 'duty_cycle',
+        'unit': 'percent'
     }
 }
 
@@ -89,11 +89,11 @@ class OutputModule(AbstractOutput):
 
     def output_switch(self, state, amount=None, duty_cycle=None):
         """Switch the output on or off"""
-        if state == 'on':
-            self.output_device.on()
+        if state == 'on' and duty_cycle != 0:
+            self.output_device.value = duty_cycle / 100.0
             self.logger.debug("Output turned on")
-        elif state == 'off':
-            self.output_device.off()
+        elif state == 'off' or duty_cycle == 0:
+            self.output_device.value = 0
             self.logger.debug("Output turned off")
 
     def is_on(self):

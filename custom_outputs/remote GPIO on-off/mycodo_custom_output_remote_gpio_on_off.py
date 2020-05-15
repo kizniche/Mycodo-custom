@@ -1,6 +1,6 @@
 # coding=utf-8
 #
-# output_remote_gpio.py - Remote GPIO Output
+# mycodo_custom_output_remote_gpio_on_off.py - On/Off Remote GPIO Output
 #
 from flask_babel import lazy_gettext
 from mycodo.outputs.base_output import AbstractOutput
