@@ -38,7 +38,7 @@ On/Off Remote GPIO (gpiozero)
 
 By `Kyle Gabriel <https://kylegabriel.com/>`__
 
-Details and code: `Mycodo-custom/custom_inputs/geiger counter/ <https://github.com/kizniche/Mycodo-custom/blob/master/custom_outputs/remote%20GPIO%20on-off>`__
+Details and code: `Mycodo-custom/custom_outputs/remote GPIO on-off/ <https://github.com/kizniche/Mycodo-custom/blob/master/custom_outputs/remote%20GPIO%20on-off>`__
 
 Remotely control GPIO pin states over a network with the use of [gpiozero](https://github.com/gpiozero/gpiozero).
 
@@ -49,7 +49,7 @@ PWM Remote GPIO (gpiozero)
 
 By `Kyle Gabriel <https://kylegabriel.com/>`__
 
-Details and code: `Mycodo-custom/custom_inputs/geiger counter/ <https://github.com/kizniche/Mycodo-custom/blob/master/custom_outputs/remote%20GPIO%20PWM>`__
+Details and code: `Mycodo-custom/custom_outputs/remote GPIO PWM/ <https://github.com/kizniche/Mycodo-custom/blob/master/custom_outputs/remote%20GPIO%20PWM>`__
 
 Remotely control GPIO pin duty cycles over a network with the use of [gpiozero](https://github.com/gpiozero/gpiozero).
 
