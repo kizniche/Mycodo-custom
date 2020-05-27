@@ -16,7 +16,8 @@ measurements_dict = {
 # Output information
 OUTPUT_INFORMATION = {
     'output_name_unique': 'remote_gpio_on_off',
-    'output_name': lazy_gettext('On/Off Remote GPIO (gpiozero)'),
+    'output_name': lazy_gettext('On/Off Remote GPIO'),
+    'output_library': 'gpiozero',
     'measurements_dict': measurements_dict,
     'version': '0.1',
 

@@ -18,7 +18,8 @@ measurements_dict = {
 # Output information
 OUTPUT_INFORMATION = {
     'output_name_unique': 'remote_gpio_pwm',
-    'output_name': lazy_gettext('PWM Remote GPIO (gpiozero)'),
+    'output_name': lazy_gettext('PWM Remote GPIO'),
+    'output_library': 'gpiozero',
     'measurements_dict': measurements_dict,
     'version': '0.1',
 
