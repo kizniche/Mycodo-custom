@@ -30,6 +30,19 @@ This Input was designed for use with the Moteino Mega with a LoRaWAN transceiver
 
 --------------
 
+BME680 (Temperature Error Fix)
+------------------------------
+
+By `Kyle Gabriel <https://kylegabriel.com/>`__
+
+Forum Post: `BME680 shows wrong temperature <https://kylegabriel.com/forum/general-discussion/sensor-bme680-occasionally-locks-up-and-shows-wrong-temperature-but-correct-humidity-until-deactivated-and-reactivated/>`__
+
+Details and code: `Mycodo-custom/custom_inputs/bme680 temperature error fix/ <https://github.com/kizniche/Mycodo-custom/blob/master/custom_inputs/bme680%20temperature%20error%20fix>`__
+
+A user with the BME680 sensor experienced an issue where the temperature would erroneously and continuously measure 34.54 C until the Input was deactivated and activated again. Since We don't know if this is an isolated incident because we only have one sensor to test, this module was created to fix the issue. If there are more reports of this occurring with other BME680 sensors, this module may move into the built-in set for Mycodo.
+
+--------------
+
 Custom Outputs
 ==============
 
