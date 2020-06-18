@@ -43,6 +43,25 @@ A user with the BME680 sensor experienced an issue where the temperature would e
 
 --------------
 
+By `Kyle Gabriel <https://kylegabriel.com/>`__
+
+Details and code: `Mycodo-custom/custom_inputs/bme280 serial to ttn/ <https://github.com/kizniche/Mycodo-custom/blob/master/custom_inputs/bme280%20serial%20to%20ttn>`__
+
+This Input will write the measured values from the BME280 sensor to a serial device. For my application, I have a MCU with a
+LoRaWAN transceiver that then receives those measurements and transmits them to The Things Network.
+
+--------------
+
+By `Kyle Gabriel <https://kylegabriel.com/>`__
+
+Details and code: `Mycodo-custom/custom_inputs/k30 serial to ttn/ <https://github.com/kizniche/Mycodo-custom/blob/master/custom_inputs/bme280%20serial%20to%20ttn>`__
+
+This Input will write the measured values from the K30 sensor to a serial device. For my application, I have a MCU with a
+LoRaWAN transceiver that then receives those measurements and transmits them to The Things Network.
+
+--------------
+
+
 Custom Outputs
 ==============
 
