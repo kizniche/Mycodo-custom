@@ -71,13 +71,13 @@ OUTPUT_INFORMATION = {
 
 
 class OutputModule(AbstractOutput):
-    """
-    An output support class that operates an output
-    """
+    """ An output support class that operates an output """
     def __init__(self, output, testing=False):
         super(OutputModule, self).__init__(output, testing=testing, name=__name__)
 
         self.output_setup = None
+        self.gpio_pin = None
+        self.output_on_state = None
         self.output_device = None
 
         self.host = None
@@ -85,10 +85,13 @@ class OutputModule(AbstractOutput):
             OUTPUT_INFORMATION['custom_options'], output)
 
         if not testing:
-            self.gpio_pin = output.pin
-            self.output_on_state = output.on_state
+            self.initialize_output()
 
-    def output_switch(self, state, amount=None, duty_cycle=None):
+    def initialize_output(self):
+        self.gpio_pin = self.output.pin
+        self.output_on_state = self.output.on_state
+
+    def output_switch(self, state, output_type=None, amount=None, duty_cycle=None):
         """Switch the output on or off"""
         if state == 'on':
             self.output_device.on()

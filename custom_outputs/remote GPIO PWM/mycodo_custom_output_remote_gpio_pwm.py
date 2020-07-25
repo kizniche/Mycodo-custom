@@ -79,6 +79,8 @@ class OutputModule(AbstractOutput):
         super(OutputModule, self).__init__(output, testing=testing, name=__name__)
 
         self.output_setup = None
+        self.gpio_pin = None
+        self.pwm_hertz = None
         self.output_device = None
 
         self.host = None
@@ -86,11 +88,13 @@ class OutputModule(AbstractOutput):
             OUTPUT_INFORMATION['custom_options'], output)
 
         if not testing:
-            self.output_setup = None
-            self.gpio_pin = output.pin
-            self.pwm_hertz = output.pwm_hertz
+            self.initialize_output()
 
-    def output_switch(self, state, amount=None, duty_cycle=None):
+    def initialize_output(self):
+        self.gpio_pin = self.output.pin
+        self.pwm_hertz = self.output.pwm_hertz
+
+    def output_switch(self, state, output_type=None, amount=None, duty_cycle=None):
         """Switch the output on or off"""
         measure_dict = measurements_dict.copy()
 

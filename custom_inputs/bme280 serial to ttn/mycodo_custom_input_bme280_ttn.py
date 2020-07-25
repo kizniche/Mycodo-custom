@@ -113,6 +113,11 @@ class InputModule(AbstractInput):
     def __init__(self, input_dev, testing=False):
         super(InputModule, self).__init__(input_dev, testing=testing, name=__name__)
 
+        self.sensor = None
+        self.serial = None
+        self.serial_send = None
+        self.lock_file = "/var/lock/mycodo_ttn.lock"
+        self.ttn_serial_error = False
         self.timer = 0
 
         # Initialize custom options
@@ -122,20 +127,23 @@ class InputModule(AbstractInput):
             INPUT_INFORMATION['custom_options'], input_dev)
 
         if not testing:
-            from Adafruit_BME280 import BME280
-            import serial
+            self.initialize_input()
 
-            self.i2c_address = int(str(input_dev.i2c_location), 16)
-            self.i2c_bus = input_dev.i2c_bus
-            self.sensor = BME280(address=self.i2c_address,
-                                 busnum=self.i2c_bus)
-            self.serial = serial
-            self.serial_send = None
-            self.lock_file = "/var/lock/mycodo_ttn.lock"
-            self.ttn_serial_error = False
+    def initialize_input(self):
+        from Adafruit_BME280 import BME280
+        import serial
+
+        self.serial = serial
+        self.sensor = BME280(
+            address=int(str(self.input_dev.i2c_location), 16),
+            busnum=self.input_dev.i2c_bus)
 
     def get_measurement(self):
         """ Gets the measurement in units by reading the """
+        if not self.sensor:
+            self.logger.error("Input not set up")
+            return
+
         self.return_dict = measurements_dict.copy()
 
         if self.is_enabled(0):
@@ -147,22 +155,16 @@ class InputModule(AbstractInput):
         if self.is_enabled(2):
             self.value_set(2, self.sensor.read_pressure())
 
-        if (self.is_enabled(3) and
-                self.is_enabled(0) and
-                self.is_enabled(1)):
-            dewpoint = calculate_dewpoint(
-                self.value_get(0), self.value_get(1))
+        if self.is_enabled(3) and self.is_enabled(0) and self.is_enabled(1):
+            dewpoint = calculate_dewpoint(self.value_get(0), self.value_get(1))
             self.value_set(3, dewpoint)
 
         if self.is_enabled(4) and self.is_enabled(2):
             altitude = calculate_altitude(self.value_get(2))
             self.value_set(4, altitude)
 
-        if (self.is_enabled(5) and
-                self.is_enabled(0) and
-                self.is_enabled(1)):
-            vpd = calculate_vapor_pressure_deficit(
-                self.value_get(0), self.value_get(1))
+        if self.is_enabled(5) and self.is_enabled(0) and self.is_enabled(1):
+            vpd = calculate_vapor_pressure_deficit(self.value_get(0), self.value_get(1))
             self.value_set(5, vpd)
 
         try:
@@ -170,19 +172,17 @@ class InputModule(AbstractInput):
             if now > self.timer:
                 self.timer = now + 80
                 # "B" designates this data belonging to the BME280
-                string_send = 'B,{},{},{}'.format(
-                    self.value_get(1),
-                    self.value_get(2),
-                    self.value_get(0))
-                self.lock_acquire(self.lock_file, timeout=10)
-                if self.locked[self.lock_file]:
-                    try:
-                        self.serial_send = self.serial.Serial(self.serial_device, 9600)
-                        self.serial_send.write(string_send.encode())
-                        time.sleep(4)
-                    finally:
-                        self.lock_release(self.lock_file)
-                self.ttn_serial_error = False
+                string_send = 'B,{},{},{}'.format(self.value_get(1), self.value_get(2), self.value_get(0))
+                if self.serial_device:
+                    self.lock_acquire(self.lock_file, timeout=10)
+                    if self.locked[self.lock_file]:
+                        try:
+                            self.serial_send = self.serial.Serial(self.serial_device, 9600)
+                            self.serial_send.write(string_send.encode())
+                            time.sleep(4)
+                        finally:
+                            self.lock_release(self.lock_file)
+                    self.ttn_serial_error = False
         except Exception as e:
             if not self.ttn_serial_error:
                 # Only send this error once if it continually occurs

@@ -183,6 +183,12 @@ class InputModule(AbstractInput):
     def __init__(self, input_dev, testing=False):
         super(InputModule, self).__init__(input_dev, testing=testing, name=__name__)
 
+        self.safecastpy = None
+        self.interface = None
+        self.period = None
+        self.latest_datetime = None
+        self.first_run = True
+
         # Initialize custom options
         self.send_safecast = None
         self.send_gmcmap = None
@@ -203,14 +209,16 @@ class InputModule(AbstractInput):
             INPUT_INFORMATION['custom_options'], input_dev)
 
         if not testing:
-            import SafecastPy
-            self.safecastpy = SafecastPy
+            self.initialize_input()
 
-            self.unique_id = input_dev.unique_id
-            self.interface = input_dev.interface
-            self.period = input_dev.period
-            self.first_run = True
-            self.latest_datetime = input_dev.datetime
+    def initialize_input(self):
+        import SafecastPy
+
+        self.safecastpy = SafecastPy
+
+        self.interface = self.input_dev.interface
+        self.period = self.input_dev.period
+        self.latest_datetime = self.input_dev.datetime
 
     def get_new_data(self, past_seconds):
         # Basic implementation. Future development may use more complex library to access API
