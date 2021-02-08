@@ -1,6 +1,6 @@
 #### Custom Output: PWM Remote GPIO (gpiozero)
 
-[Version 0.1](https://github.com/kizniche/Mycodo-custom/blob/master/custom_outputs/remote%20GPIO%20PWM/CHANGELOG.md)
+[Version 1.1](https://github.com/kizniche/Mycodo-custom/blob/master/custom_outputs/remote%20GPIO%20PWM/CHANGELOG.md)
 
 By [Kyle Gabriel](https://kylegabriel.com/)
 

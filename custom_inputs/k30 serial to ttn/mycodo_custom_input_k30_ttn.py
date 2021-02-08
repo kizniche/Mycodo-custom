@@ -31,9 +31,9 @@ measurements_dict = {
 
 # Input information
 INPUT_INFORMATION = {
-    'input_name_unique': 'K30_TTN',
+    'input_name_unique': 'K30_TTN_1_1',
     'input_manufacturer': 'CO2Meter',
-    'input_name': 'K30 (->Serial->TTN)',
+    'input_name': 'K30 (->Serial->TTN) v1.1',
     'input_library': 'serial',
     'measurements_name': 'CO2',
     'measurements_dict': measurements_dict,
@@ -140,8 +140,7 @@ class InputModule(AbstractInput):
                 # "K" designates this data belonging to the K30
                 string_send = 'K,{}'.format(self.value_get(0))
                 if self.serial_device:
-                    self.lock_acquire(self.lock_file, timeout=10)
-                    if self.locked[self.lock_file]:
+                    if self.lock_acquire(self.lock_file, timeout=10):
                         try:
                             self.serial_send = self.serial.Serial(self.serial_device, 9600)
                             self.serial_send.write(string_send.encode())

@@ -15,13 +15,20 @@ measurements_dict = {
     }
 }
 
+channels_dict = {
+    0: {
+        'types': ['pwm'],
+        'measurements': [0]
+    }
+}
+
 # Output information
 OUTPUT_INFORMATION = {
-    'output_name_unique': 'remote_gpio_pwm',
-    'output_name': lazy_gettext('PWM Remote GPIO'),
+    'output_name_unique': 'remote_gpio_pwm_1_1',
+    'output_name': "{} v1.1".format(lazy_gettext('PWM Remote GPIO')),
     'output_library': 'gpiozero',
     'measurements_dict': measurements_dict,
-    'version': '0.1',
+    'channels_dict': channels_dict,
 
     'on_state_internally_handled': False,
 

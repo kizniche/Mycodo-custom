@@ -1,6 +1,6 @@
 #### Custom Output: On/Off Remote GPIO (gpiozero)
 
-[Version 0.1](https://github.com/kizniche/Mycodo-custom/blob/master/custom_outputs/remote%20GPIO%20on-off/CHANGELOG.md)
+[Version 1.1](https://github.com/kizniche/Mycodo-custom/blob/master/custom_outputs/remote%20GPIO%20on-off/CHANGELOG.md)
 
 By [Kyle Gabriel](https://kylegabriel.com/)
 

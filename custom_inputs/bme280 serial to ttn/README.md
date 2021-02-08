@@ -1,6 +1,6 @@
 #### Custom Input: BME280 Serial to The Things Network
 
-[Version 1.0](https://github.com/kizniche/Mycodo-custom/blob/master/custom_inputs/bme280%20serial%20to%20ttn/CHANGELOG.md)
+[Version 1.1](https://github.com/kizniche/Mycodo-custom/blob/master/custom_inputs/bme280%20serial%20to%20ttn/CHANGELOG.md)
 
 By [Kyle Gabriel](https://kylegabriel.com/)
 
