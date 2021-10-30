@@ -1,6 +1,6 @@
 #### Custom Input: LoRaWAN-enabled Geiger Counter
 
-[Version 1.3](https://github.com/kizniche/Mycodo-custom/blob/master/custom_inputs/geiger%20counter/CHANGELOG.md)
+[Version 1.4](https://github.com/kizniche/Mycodo-custom/blob/master/custom_inputs/geiger%20counter/CHANGELOG.md)
 
 By [Kyle Gabriel](https://kylegabriel.com/)
 
@@ -16,12 +16,15 @@ Every hour, the Moteino Mega powers the Geiger counter for 1 minute to acquire
 radiation measurements. The Moteino Mega then records the counts per minute
 (CPM) and μSv/hr measurement data over the Geiger Counter's serial connection.
 The Geiger counter power is turned off and the data is transmitted via LoRaWAN
-to The Things Network (TTN). Mycodo uses this custom Input to download the
+to The Things Network (TTN, v3). Mycodo uses this custom Input to download the
 measurements from TTN and transmit them to Safecast and GMC Map.
+
+The original code for TTN v2 is also saved in this repository but will be 
+deprecated December 2021 when TTN v2 shuts down.
 
 #### Requirements
 
-* Mycodo >= 7.7.0
+* Mycodo >= 8.12.0
 * [Moteino Mega](https://lowpowerlab.com/shop/product/119) with a LoRaWAN Transceiver (choose the proper frequency for your region)
 * [MightyOhm Geiger Counter 1.0](https://mightyohm.com/blog/products/geiger-counter/)
 * Your own LoRaWAN Gateway or use a public gateway
@@ -50,32 +53,12 @@ measurements from TTN and transmit them to Safecast and GMC Map.
 * Connect the ground pin of the Moteino Mega to the ground pin of the Geiger counter. 
 * Put the Geiger counter power switch into the ON position.
 * On TTN, create a new application and add a device.
-* On TTN, enable the Data Storage Integration in the application and copy the [Payload Decoder code](https://raw.githubusercontent.com/kizniche/Mycodo-custom/master/custom_inputs/geiger%20counter/payload_decoder_the_things_network_app.java).
+* On TTN, enable the Data Storage Integration in the application and copy the [Uplink Payload Decoder code](https://raw.githubusercontent.com/kizniche/Mycodo-custom/master/custom_inputs/geiger%20counter/payload_decoder_the_things_network_app_ttn_v3.java).
 * Power the Moteino Mega and verify data is being transmitted to TTN.
-* In Mycodo, upload the [Custom Input](https://raw.githubusercontent.com/kizniche/Mycodo-custom/master/custom_inputs/geiger%20counter/mycodo_custom_input_ttn_data_storage_geiger_counter.py) file under Config -> Inputs.
+* In Mycodo, upload the [Custom Input](https://raw.githubusercontent.com/kizniche/Mycodo-custom/master/custom_inputs/geiger%20counter/mycodo_custom_input_ttn_data_storage_geiger_counter_ttn_v3.py) file under Config -> Inputs.
 * In Mycodo, on the Data page, use the dropdown to select and add the new Input "Geiger Counter (TTN/Safecast/GMCMap)".
 * Configure and activate the new Input. Data can be sent to Safecast (api.safecast.org) and GMC Map (gmcmap.com). For each service, set up an account, add a device, enter credentials, and check the checkbox to enable each.
 
 #### Notes
 
 I use 3x AA batteries to power the Moteino Mega via the VIN pin (which has its own voltage regulator). In the images, below, the battery pack is housed underneath the Geiger counter.
-
-#### Images
-
-![GC System 01](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger%20counter/images/GC_System_01.jpg)
-
-![GC System 02](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger%20counter/images/GC_System_02.jpg)
-
-![GC System 03](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger%20counter/images/GC_System_03.jpg)
-
----
-
-![Screenshot_Safecast_map](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger%20counter/images/Screenshot_Safecast_map.png)
-
-![Screenshot_Safecast_data](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger%20counter/images/Screenshot_Safecast_data.png)
-
----
-
-![Screenshot_GMC_Map](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger%20counter/images/Screenshot_GMC_Map.png)
-
-![Screenshot_GMC_Map_data](https://raw.githubusercontent.com/kizniche/Mycodo-custom-inputs/master/geiger%20counter/images/Screenshot_GMC_Map_data.png)

@@ -56,7 +56,7 @@ measurements_dict = {
 INPUT_INFORMATION = {
     'input_name_unique': 'TTN_DATA_STORAGE_GEIGER',
     'input_manufacturer': 'Moteino Mega/MightOhm',
-    'input_name': 'Geiger Counter (TTN/Safecast/GMCMap)',
+    'input_name': 'Geiger Counter (TTN/Safecast/GMCMap) (TTN v2)',
     'measurements_name': 'CPM and μSv/hr',
     'measurements_dict': measurements_dict,
     'measurements_use_same_timestamp': False,

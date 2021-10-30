@@ -1,3 +1,10 @@
+## 1.4 (2021-10-30)
+
+### Features
+
+ - Update to work with TTN v3
+
+
 ## 1.3 (2019-09-14)
 
 ### Features
