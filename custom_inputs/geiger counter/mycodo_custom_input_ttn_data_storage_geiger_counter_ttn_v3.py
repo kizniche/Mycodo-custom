@@ -244,7 +244,7 @@ class InputModule(AbstractInput):
         usv_h_value = None
         usv_h_ts = None
 
-        for i, each_resp in enumerate(list_dicts, 1):
+        for each_resp in list_dicts:
             if not each_resp:
                 continue
             self.logger.debug("each_resp: {}".format(each_resp))
