@@ -93,14 +93,14 @@ Remotely control GPIO pin duty cycles over a network with the use of [gpiozero](
 
 --------------
 
-Custom Controllers
-==================
+Custom Functions
+================
 
 CoolBot Clone
 -------------
 
 By `Kyle Gabriel <https://kylegabriel.com/>`__
 
-Details and code: `Mycodo-custom/custom_controllers/coolbot clone/ <https://github.com/kizniche/Mycodo-custom/blob/master/custom_controllers/coolbot%20clone>`__
+Details and code: `Mycodo-custom/custom_functions/coolbot clone/ <https://github.com/kizniche/Mycodo-custom/blob/master/custom_functions/coolbot%20clone>`__
 
 This Controller mimics the functionality of a `CoolBot <https://storeitcold.com>`__, allowing a walking cool room or freezer to be created using an inexpensive air conditioner unit.
