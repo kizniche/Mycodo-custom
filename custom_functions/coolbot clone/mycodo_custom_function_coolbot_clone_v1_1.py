@@ -167,9 +167,9 @@ class CustomModule(AbstractFunction):
     """
     Class to operate custom controller
     """
-    def __init__(self, ready, unique_id, testing=False):
+    def __init__(self, function, testing=False):
         threading.Thread.__init__(self)
-        super(CustomModule, self).__init__(ready, unique_id=unique_id, name=__name__)
+        super(CustomModule, self).__init__(function, testing=testing, name=__name__)
 
         self.is_setup = False
         self.timer_loop = time.time()
