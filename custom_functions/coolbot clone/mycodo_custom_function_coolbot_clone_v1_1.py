@@ -25,12 +25,17 @@ import threading
 import time
 import timeit
 from flask_babel import lazy_gettext
+from mycodo.databases.models import Conversion
 from mycodo.databases.models import CustomController
 from mycodo.functions.base_function import AbstractFunction
+from mycodo.inputs.sensorutils import convert_from_x_to_y_unit
 from mycodo.mycodo_client import DaemonControl
 from mycodo.utils.constraints_pass import constraints_pass_positive_or_zero_value
 from mycodo.utils.constraints_pass import constraints_pass_positive_value
 from mycodo.utils.database import db_retrieve_table_daemon
+from mycodo.utils.system_pi import get_measurement
+from mycodo.utils.system_pi import return_measurement_info
+
 
 FUNCTION_INFORMATION = {
     'function_name_unique': 'COOLBOT_CLONE_V1_1',
@@ -121,10 +126,11 @@ FUNCTION_INFORMATION = {
         },
         {
             'id': 'out_ac_heater',
-            'type': 'select_device',
+            'type': 'select_measurement_channel',
             'default_value': '',
+            'required': True,
             'options_select': [
-                'Output',
+                'Output_Channels_Measurements',
             ],
             'name': lazy_gettext('Output: Heater'),
             'phrase': lazy_gettext('The output that heats the AC temperature sensor')
@@ -184,7 +190,10 @@ class CustomModule(AbstractFunction):
         self.in_temp_room_device_id = None
         self.in_temp_room_measurement_id = None
         self.in_temp_room_max_age = None
-        self.out_ac_heater_id = None
+        self.out_ac_heater_device_id = None
+        self.out_ac_heater_measurement_id = None
+        self.out_ac_heater_channel_id = None
+        self.output_ac_heater_channel = None
         self.setpoint_temperature = None
         self.temperature_hysteresis = None
         self.temperature_freeze = None
@@ -204,6 +213,8 @@ class CustomModule(AbstractFunction):
     def initialize(self):
         self.temp_upper = self.setpoint_temperature + self.temperature_hysteresis
         self.temp_lower = self.setpoint_temperature - self.temperature_hysteresis
+        self.output_ac_heater_channel = self.get_output_channel_from_channel_id(
+            self.out_ac_heater_channel_id)
         self.timer_loop = time.time() + self.start_offset
         self.is_setup = True
 
@@ -212,14 +223,14 @@ class CustomModule(AbstractFunction):
             return
 
         while self.timer_loop < time.time():
-            self.timer_loop += self.update_period
+            self.timer_loop += self.period
 
         temperature_condenser = self.get_ac_condenser_temperature()
         temperature_room = self.get_room_temperature()
 
         if not temperature_condenser or not temperature_room:
             self.logger.error("Could not get condenser or room temperature. Turning off AC")
-            self.control.output_off(self.out_ac_heater_id)
+            self.control.output_off(self.out_ac_heater_device_id, output_channel=self.output_ac_heater_channel)
             return
 
         self.logger.debug(f"Temperatures: Room = {temperature_room} C, Condenser = {temperature_condenser} C")
@@ -228,22 +239,24 @@ class CustomModule(AbstractFunction):
             # condenser too cold, stop cooling
             self.logger.debug(
                 f"{temperature_condenser} C < {self.temperature_freeze} C (Freezing): "
-                f"Turning heater output ({self.out_ac_heater_id}) off")
-            self.control.output_off(self.out_ac_heater_id)
+                f"Turning heater output ({self.out_ac_heater_device_id}) off")
+            self.control.output_off(self.out_ac_heater_device_id, output_channel=self.output_ac_heater_channel
+            )
         elif temperature_room > self.temp_upper and (not self.temp_direction or self.temp_direction == "heat"):
             # Temperature is too high, start cooling
             self.temp_direction = "cool"
             self.logger.debug(
                 f"{temperature_room} C > {self.temp_upper} C: "
-                f"Turning heater output ({self.out_ac_heater_id}) on")
-            self.control.output_on(self.out_ac_heater_id)
+                f"Turning heater output ({self.out_ac_heater_device_id}) on")
+            self.control.output_on(self.out_ac_heater_device_id, output_channel=self.output_ac_heater_channel)
         elif temperature_room < self.temp_lower and (not self.temp_direction or self.temp_direction == "cool"):
             # Temperature is too low, stop cooling
             self.temp_direction = "heat"
             self.logger.debug(
                 f"{temperature_room} C < {self.temp_lower} C: "
-                f"Turning heater output ({self.out_ac_heater_id}) off")
-            self.control.output_off(self.out_ac_heater_id)
+                f"Turning heater output ({self.out_ac_heater_device_id}) off")
+            self.control.output_off(
+              self.out_ac_heater_device_id, output_channel=self.output_ac_heater_channel)
 
     def get_ac_condenser_temperature(self):
         """Get condenser temperature"""
@@ -296,5 +309,5 @@ class CustomModule(AbstractFunction):
                 f"measurement ID {self.in_temp_room_measurement_id}")
 
     def stop_function(self):
-        self.logger.debug(f"Turning heater output ({self.out_ac_heater_id}) off")
-        self.control.output_off(self.out_ac_heater_id)
+        self.logger.debug(f"Turning heater output ({self.out_ac_heater_device_id}) off")
+        self.control.output_off(self.out_ac_heater_device_id, output_channel=self.output_ac_heater_channel)
