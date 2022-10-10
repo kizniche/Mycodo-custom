@@ -67,6 +67,17 @@ LoRaWAN transceiver that then receives those measurements and transmits them to 
 
 --------------
 
+SI114x I2C Sunlight Sensor
+--------------------------
+
+By `Pascal Krahmer <https://github.com/pkrahmer>`__
+
+Details and code: `Mycodo-custom/custom_inputs/si114x/ <https://github.com/kizniche/Mycodo-custom/blob/master/custom_inputs/si114x>`__
+
+This input supports the SI114X light sensor. It provides information about Visible Light, Infrared Light and an UV Index based on the former readings.
+
+--------------
+
 
 Custom Outputs
 ==============
